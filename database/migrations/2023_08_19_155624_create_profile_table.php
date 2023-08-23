@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('phone');
+            $table->longText('about_me');
             $table->integer('role')->default(3);
             $table->string('thumbnail')->default('https://loremflickr.com/cache/resized/65535_52743316953_d31f8988ae_320_240_nofilter.jpg');
             $table->boolean('active')->default(true);
