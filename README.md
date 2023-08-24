@@ -34,8 +34,15 @@ When I say "people who live in a particular neighborhood," I mean people who liv
         includes admin account
             'name' => 'admin',
             'email' => 'admin@email.com',
-            'pass' => 'Password@123',
-    )
+            'pass' => 'password',
+            'role' => '1'
+
+        includes 10 marites account
+            'name' => 'admin',
+            'email' => 'marites1-10@email.com',
+            'pass' => 'password',
+            'role' => '3'
+    ) 
 - run php artisan serve
 - run in separate terminal npm run build
 - done

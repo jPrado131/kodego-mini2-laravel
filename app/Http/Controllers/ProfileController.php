@@ -22,7 +22,7 @@ class ProfileController extends Controller
         return view('profile.index', ['user_data' => $user_data, 'profile_data' => $profile_data]);
     }
 
-    public function edit(Profile $profile){
+    public function edit(){
 
         //return view('profile.edit');
         $user = Auth::user();
@@ -44,14 +44,42 @@ class ProfileController extends Controller
 
         if($request["phone"] || $request["about_me"]){
             DB::select('UPDATE profiles 
-            SET phone = "'. $request["phone"] .'",
-            about_me = "'. $request["about_me"] .'"
+            SET first_name = "'. $request["first_name"] .'",
+            last_name = "'. $request["last_name"] .'",
+            about_me = "'. $request["about_me"] .'",
+            phone = "'. $request["phone"] .'"
             WHERE user_id="'. $user->id .'"');
         }
 
         return redirect()->route('profile.index');
     
     }
+
+    public function upload_pro_pic(Request $request){
+
+        $user = Auth::user();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads'), $imageName);
+
+            $image_url = "/uploads/". $imageName;
+
+            DB::select('UPDATE profiles 
+            SET thumbnail = "' . $image_url .'"
+            WHERE user_id="'. $user->id .'"');
+            
+            return redirect()->route('profile.edit');
+        }
+
+        return redirect()->back()->with('error', 'No image file uploaded.');
+
+    }
+
+    public function index_pro_pic(){
+        return view('profile.upload');
+    } 
 
     
 }

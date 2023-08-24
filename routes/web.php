@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::get('/upload/image', [ProfileController::class, 'index_pro_pic'])->name('profile.index_pro_pic');
+    Route::post('/upload/image', [ProfileController::class, 'upload_pro_pic'])->name('upload.upload_pro_pic');
 });
 
 Auth::routes();
