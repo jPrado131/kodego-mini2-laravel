@@ -17,11 +17,13 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+
+</div>
+    <div id="app ">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-size: cover; background-color: blue;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="images\mvclogo.png" alt="MVC" class="img-fluid" style="max-width: 50px; max-height: 50px;">
+                <img src="images\mvclogo.png" alt="MVC" class="img-fluid" style="max-width: 60px; max-height: 60px;">
                 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -32,10 +34,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
+                            <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('home') }}">{{ __('Home') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('about') }}">{{ __('About') }}</a>
+                            <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('about') }}">{{ __('About') }}</a>
                         </li>
                     </ul>
 
@@ -45,13 +47,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
