@@ -1,6 +1,13 @@
 @extends('layouts.app')
 @section('content')
 
+
+<div class="container">
+  <div class="nav-area" style="background-image: url('images/cloud.jpeg'); background-size: cover;">
+  </div>
+</div>
+<div class="container" style="background-image: url('images/cloud.jpeg'); background-size: cover; background-color: blue;">
+</div>
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 d-flex justify-content-end">
