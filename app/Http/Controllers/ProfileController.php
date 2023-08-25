@@ -10,26 +10,40 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
+
     public function __construct(){}
+
     public function index(){
-        
+
         $user = Auth::user();
 
-        $user_data = DB::select('SELECT * FROM users WHERE id="'. $user->id .'"');
-        $profile_data = DB::select('SELECT * FROM profiles WHERE user_id="'. $user->id .'"');
+        $user_data = DB::table('users')
+        ->select('*')
+        ->where('id', '=', $user->id)
+        ->get();
 
-        //return "profile index user ". print_r($data);
+        $profile_data = DB::table('profiles')
+        ->select('*')
+        ->where('user_id', '=', $user->id)
+        ->get();
+
         return view('profile.index', ['user_data' => $user_data, 'profile_data' => $profile_data]);
     }
 
     public function edit(){
 
-        //return view('profile.edit');
         $user = Auth::user();
 
-        $user_data = DB::select('SELECT * FROM users WHERE id="'. $user->id .'"');
-        $profile_data = DB::select('SELECT * FROM profiles WHERE user_id="'. $user->id .'"');
+        $user_data = DB::table('users')
+        ->select('*')
+        ->where('id', '=', $user->id)
+        ->get();
 
+        $profile_data = DB::table('profiles')
+        ->select('*')
+        ->where('user_id', '=', $user->id)
+        ->get();
+        
 
         return view('profile.edit', ['user_data' => $user_data, 'profile_data' => $profile_data]);
     }
@@ -38,18 +52,20 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-
-        // // $this->employeeRepository->update($request->all(), $employee);
-        // // return redirect()->route('employees.show', ['employee' => $employee->id]);
-
-        if($request["phone"] || $request["about_me"]){
-            DB::select('UPDATE profiles 
-            SET first_name = "'. $request["first_name"] .'",
-            last_name = "'. $request["last_name"] .'",
-            about_me = "'. $request["about_me"] .'",
-            phone = "'. $request["phone"] .'"
-            WHERE user_id="'. $user->id .'"');
-        }
+        DB::table('profiles')
+        ->where('user_id', $user->id)
+        ->update([
+            'first_name' => $request["first_name"],
+            'last_name' => $request["last_name"],
+            'about_me' => $request["about_me"],
+            'phone' => $request["phone"]
+        ]);
+        
+        DB::table('users')
+        ->where('id', $user->id)
+        ->update([
+            'name' => $request["name"],
+        ]);
 
         return redirect()->route('profile.index');
     
@@ -62,14 +78,16 @@ class ProfileController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads'), $imageName);
+            $image->move(public_path('uploads/profile'), $imageName);
 
-            $image_url = "/uploads/". $imageName;
+            $image_url = "/uploads/profile/". $imageName;
 
-            DB::select('UPDATE profiles 
-            SET thumbnail = "' . $image_url .'"
-            WHERE user_id="'. $user->id .'"');
-            
+            DB::table('profiles')
+            ->where('user_id', $user->id)
+            ->update([
+                'thumbnail' => $image_url,
+            ]);
+           
             return redirect()->route('profile.edit');
         }
 

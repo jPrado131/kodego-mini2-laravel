@@ -39,8 +39,8 @@
     
                     <h2>Contact Information</h2>
                     <ul class="list-group">
-                        <li class="list-group-item">User Name: {{$user_data[0]->name}}</li> 
                         <li class="list-group-item">Email: {{$user_data[0]->email}}</li>
+                        <li class="list-group-item">User Name: <input type="text" name="name" value="{{$user_data[0]->name}}" /></li> 
                         <li class="list-group-item">First Name: <input type="text" name="first_name" value="{{$profile_data[0]->first_name}}" /></li>
                         <li class="list-group-item">Last Name: <input type="text" name="last_name" value="{{$profile_data[0]->last_name}}" /></li>
                         <li class="list-group-item">Phone: <input type="text" name="phone" value="{{$profile_data[0]->phone}}" /></li>
