@@ -40,9 +40,9 @@ Auth::routes();
 
 // PUBLIC ROUTES
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
-})->name('home');
+})->name('welcome');
 
 Route::get('/about', function () {
     return view('about');
@@ -51,7 +51,9 @@ Route::get('/about', function () {
 Route::get('/welcomepage', function () {
     return view('welcomepage');
 })->name('welcomepage');
-
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 
 
