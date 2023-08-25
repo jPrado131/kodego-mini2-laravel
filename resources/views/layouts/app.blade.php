@@ -12,9 +12,16 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css" rel="stylesheet">
+
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/en.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+
+
 </head>
 <body>
 
@@ -65,6 +72,15 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('profile.index') }}">
                                         {{ __('Profile') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('post.index') }}">
+                                        {{ __('News') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                        {{ __('Events') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                        {{ __('Announcements') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
