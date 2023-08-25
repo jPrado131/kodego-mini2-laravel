@@ -15,7 +15,7 @@
                 <br>
                 <li><b>Post about anything you want</b></li>
                 <ul>
-               <li><b>Information about what's happening in your community:</b>Share news about upcoming festivals, new businesses, or anything else that's happening in your area.</li>
+               <li><b>Information about what's happening in your community:</b> Share news about upcoming festivals, new businesses, or anything else that's happening in your area.</li>
                <li><b>Your passions:</b> Share your hobbies, interests, and talents with others. Tell us about your love of cooking, gardening, hiking, or anything else that you're passionate about.</li>
                <a href="{{ route('welcomepage') }}" class="btn btn-primary">Learn More</a>
 
