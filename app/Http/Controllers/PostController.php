@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -148,12 +149,9 @@ class PostController extends Controller
        
     }
 
-    public function delete($post_id){
-
-        return print_r($post_id);
-
-        $deletedRows = DB::table('posts')->where('id', '=', $post_id)->delete();
-
-        return "Deleted $deletedRows row(s)";   
+    public function delete($post_id)
+    {
+        DB::table('posts')->where('id', '=', $post_id)->delete();
+        return redirect()->route('post.index')->with('success', 'Post deleted successfully.');
     }
 }

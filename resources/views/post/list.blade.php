@@ -1,11 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container mt-5">
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+<div class="container my-5">
     <div class="row mb-3">
-        <div class="col">
-            <h3 class="mt-4">NEWS FEEDS</h3>
-        </div>
         <div class="col text-end">
             <a class="btn btn-secondary" href="{{route('post.create_get')}}">Create Post</a>
         </div>

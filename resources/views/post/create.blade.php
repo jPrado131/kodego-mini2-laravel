@@ -54,6 +54,7 @@
                 ['fullScreen', 'showBlocks', 'codeView'],
                 ['preview', 'print'],
             ],
+            minHeight: '300px'
         });
         
         const hiddenContentField = document.getElementById('hiddenContent');
