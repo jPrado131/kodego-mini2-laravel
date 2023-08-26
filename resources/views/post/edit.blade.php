@@ -2,33 +2,40 @@
 @section('content')
 
 <div class="container mt-5">
-    <form id="createPost" action="{{route('post.create_put')}}" method="POST" enctype="multipart/form-data">
+    <form id="editPost" action="{{route('post.edit_put',['post_id' => $post->id])}}" method="POST" enctype="multipart/form-data">
             @method('PUT')
             @csrf
+
         <div class="row mb-3 ">
             <div class="col">
-                <h4 class="card-title">Create Post</h4>
+                <h4 class="card-title">Edit Post</h4>
             </div>
             <div class="col text-end">
-                <input class="btn btn-primary" type="submit" value="Create">
+                <input class="btn btn-primary" type="submit" value="Save">
                 <a class="btn btn-secondary" href="{{route('post.index')}}">Cancel</a>
             </div>
+        </div>
+        <input type="hidden" id="hiddenContent" name="content" value="{{$post->content}}" />
+        <input type="hidden" id="hiddenimage" name="current_image" value="{{$post->thumbnail_url}}" />
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" name="status" id="flexSwitchCheckDefault" @if($post->status === 'publish') checked @endif>
+            <label class="form-check-label" for="flexSwitchCheckDefault"> @if($post->status ==='publish')Unpublish @else Publish @endif</label>
         </div>
   
         <div class="form-group mb-3 text-middle">
             <label for="image">Featured Image</label>
-            <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%; display: none;">
+            <img id="imagePreview" src="{{$post->thumbnail_url}}" alt="Image Preview" style="max-width: 100%;width: 100%; @if($post->thumbnail_url == '') display:none; @endif">
             <input class="form-control form-control-lg" id="image" type="file" name="image" accept="image/png, image/gif, image/jpeg" onchange="previewImage(event)">
         </div>
         <div class="form-group mb-3">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input type="text" class="form-control" id="title" name="title" value="{{$post->title}}" required>
         </div>
         
         <div class="form-group mb-3">
             <label for="content">Content</label>
-            <input type="hidden" id="hiddenContent" name="content" />
-            <textarea class="form-control witheditor" id="content" rows="4"></textarea>
+            <textarea class="form-control witheditor" id="content" rows="4">{{$post->content}}</textarea>
         </div>
 
     </form>

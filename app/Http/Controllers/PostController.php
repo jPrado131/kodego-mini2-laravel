@@ -14,7 +14,8 @@ class PostController extends Controller
         $data = array();
         $posts = DB::table('posts')
         ->select('*')
-        ->orderBy('id', 'desc')
+        ->orderBy('updated_at', 'desc')
+        ->where('status','publish')
         ->get();
 
         foreach($posts as $post){
@@ -37,12 +38,20 @@ class PostController extends Controller
         return $type;
     }
 
-    public function create_get(){
-        return view('post.create');
-    }
+    public function create_get(Request $request){
+        $backUrl = '';
+        if($request['page'] && $request['page'] == 'profile' ){
+           $backUrl = '/profile';
+        }else{
+            $backUrl = '/home';
+        }
+
+        return view('post.create', ['backurl'=> $backUrl]);
+    } 
 
     public function create_put(Request $request){
         $user = Auth::user();
+        $image_url = "";
 
         //return dd($request);
 
@@ -51,7 +60,7 @@ class PostController extends Controller
                 'title' => $request['title'],
                 'content' => $request['content'],
                 'author' => $user->id,
-                'thumbnail_url' => '',
+                'thumbnail_url' => $image_url,
                 'type' => 'post',
                 'status' => 'publish',
             ]
@@ -75,7 +84,49 @@ class PostController extends Controller
 
     }
 
+    public function edit_get($post_id){
+
+        $user = Auth::user();
+
+        $posts = DB::table('posts')
+        ->select('*')
+        ->where('id','=',$post_id)
+        ->get();
+
+        if($posts[0]->author != $user->id){
+            return 'Sorry!, you dont have access to edit this page.';
+        }
+
+        return view('post.edit',['post'=>$posts[0]]);
+    }
+    public function edit_put($post_id ,Request $request){
+        $image_url = $request['current_image'];
+           
+        
+        if ($post_id && $request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'post-'.time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/posts'), $imageName);
+
+            $image_url = "/uploads/posts/". $imageName;
+        }
+
+        DB::table('posts')
+        ->where('id', $post_id)
+        ->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'thumbnail_url' => $image_url,
+            'type' => 'post',
+            'status' => ($request['status'] ? 'publish' : 'unpublish'),
+        ]);      
+        
+        return redirect('/post/'.$post_id);
+    
+    }
+
     public function single($post_id){
+        $user = Auth::user();
         
         $data = DB::table('posts')
         ->select('*')
@@ -90,10 +141,19 @@ class PostController extends Controller
 
             $formattedDate = $dateTime->format('F j, Y');
 
-            return view('post.single', ['post' => $data[0], 'post_formateddate' => $formattedDate]);
+            return view('post.single', ['post' => $data[0], 'post_formateddate' => $formattedDate, 'user'=>$user]);
         }else {
             return response('post not found');
         }
        
+    }
+
+    public function delete($post_id){
+
+        return print_r($post_id);
+
+        $deletedRows = DB::table('posts')->where('id', '=', $post_id)->delete();
+
+        return "Deleted $deletedRows row(s)";   
     }
 }

@@ -11,7 +11,7 @@
             </div>
             <div class="col text-end">
                 <input class="btn btn-primary" type="submit" value="Create">
-                <a class="btn btn-secondary" href="{{route('post.index')}}">Cancel</a>
+                <a class="btn btn-secondary" href="{{$backurl}}">Cancel</a>
             </div>
         </div>
   

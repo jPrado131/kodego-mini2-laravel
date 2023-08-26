@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -26,13 +26,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/upload/image', [ProfileController::class, 'index_pro_pic'])->name('profile.index_pro_pic');
     Route::post('/upload/image', [ProfileController::class, 'upload_pro_pic'])->name('upload.upload_pro_pic');
 
-    Route::get('/news', [PostController::class, 'index'])->name('post.index');
+    Route::get('/home', [PostController::class, 'index'])->name('post.index');
     Route::get('/news/{type}', [PostController::class, 'list_type'])->name('post.list');
-    Route::put('/news', [PostController::class, 'create_put'])->name('post.create_put');
+    Route::put('/home', [PostController::class, 'create_put'])->name('post.create_put');
+
 
     Route::get('/post/create', [PostController::class, 'create_get'])->name('post.create_get');
+    Route::get('/post/{post_id}/edit', [PostController::class, 'edit_get'])->name('post.edit_get');
+    
     
     Route::get('/post/{post_id}', [PostController::class, 'single'])->name('post.single');
+    Route::put('/post/{post_id}', [PostController::class, 'edit_put'])->name('post.edit_put');
+    Route::post('/home', [PostController::class, 'delete'])->name('post.delete');
+   
 
 });  
 
@@ -40,7 +46,7 @@ Auth::routes();
 
 // PUBLIC ROUTES
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
@@ -51,9 +57,7 @@ Route::get('/about', function () {
 Route::get('/welcomepage', function () {
     return view('welcomepage');
 })->name('welcomepage');
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+
 
 
 

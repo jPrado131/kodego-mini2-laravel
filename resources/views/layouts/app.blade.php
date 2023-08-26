@@ -29,8 +29,8 @@
     <div id="app ">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-size: cover; background-color: blue;">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/welcome') }}">
-                <img src="images\mvclogo.png" alt="MVC" class="img-fluid" style="max-width: 60px; max-height: 60px;">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ url('/images/mvclogo.png') }}" alt="MVC" class="img-fluid" style="max-width: 60px; max-height: 60px;">
                 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -40,9 +40,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('home') }}">{{ __('Home') }}</a>
-                        </li>
+                        <!-- Authentication Links -->
+                        @guest
+
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('post.index') }}">{{ __('Home') }}</a>
+                            </li>
+                        @endguest
                         <li class="nav-item">
                             <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('about') }}">{{ __('About') }}</a>
                         </li>
@@ -99,7 +104,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>

@@ -4,7 +4,11 @@
 <div class="container mt-5">
     <div class="row mb-3 text-end">
         <div class="col">
-            <a class="btn btn-secondary" href="{{route('post.index')}}">Back To post list</a>
+            @if($user->id == $post->author)
+                <a class="btn btn-primary" href="/post/{{$post->id}}/edit">Edit</a>
+                <a class="btn btn-danger" href="{{route('post.delete', ['post_id'=>$post->id])}}">Delete</a>
+            @endif
+            <a class="btn btn-secondary" href="{{route('post.index')}}">Back To Home</a>
         </div>
     </div>
     <div class="card">

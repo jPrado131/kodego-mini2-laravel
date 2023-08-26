@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -16,6 +17,7 @@ class ProfileController extends Controller
     public function index(){
 
         $user = Auth::user();
+        $data = array();
 
         $user_data = DB::table('users')
         ->select('*')
@@ -27,7 +29,23 @@ class ProfileController extends Controller
         ->where('user_id', '=', $user->id)
         ->get();
 
-        return view('profile.index', ['user_data' => $user_data, 'profile_data' => $profile_data]);
+        $posts = DB::table('posts')
+        ->select('*')
+        ->orderBy('id', 'desc')
+        ->where('author', $user->id)
+        ->get();
+
+
+        foreach($posts as $post){
+            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
+            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText ]);
+        }
+      
+        return view('profile.index', [
+            'user_data' => $user_data,
+            'profile_data' => $profile_data,
+            'posts' => $data
+            ]);
     }
 
     public function edit(){
