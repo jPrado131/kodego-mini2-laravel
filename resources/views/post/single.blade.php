@@ -48,7 +48,6 @@
         <!-- Add more comments here -->
     </div>
     <form id="commentPost" action="{{route('post.comment',['post_id' => $post->id])}}" method="POST" enctype="multipart/form-data">
-        @method('PUT')
         @csrf
         <div class="form-group mb-3">
             <textarea class="form-control" id="comment-box" rows="4" placeholder="Type Comment Here" name="comment"></textarea>

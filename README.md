@@ -31,15 +31,15 @@ When I say "people who live in a particular neighborhood," I mean people who liv
     - prefered db name (mvc_mini2_db)
     - run php artisan migrate
     - php artisan db:seed (
-        includes admin account
+        includes 2 admin account
             'name' => 'admin',
-            'email' => 'admin@email.com',
+            'email' => 'admin-2@email.com',
             'pass' => 'password',
             'role' => '1'
 
-        includes 10 marites account
-            'name' => 'admin',
-            'email' => 'marites1-10@email.com',
+        includes 5 marites account
+            'name' => 'marites1-5',
+            'email' => 'marites1-5@email.com',
             'pass' => 'password',
             'role' => '3'
     ) 

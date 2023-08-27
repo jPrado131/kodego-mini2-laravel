@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container mt-5">
-    <form id="editPost" action="{{route('post.edit_put',['post_id' => $post->id])}}" method="POST" enctype="multipart/form-data">
+    <form id="editPost" action="{{route('post.edit_put', ['post_id' => $post->id])}}" method="POST" enctype="multipart/form-data">
             @method('PUT')
             @csrf
 

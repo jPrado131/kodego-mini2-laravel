@@ -27,7 +27,7 @@
                    
                     <div class="card-body">
                         <h5 class="card-title">{{$profile_data[0]->first_name." ".$profile_data[0]->last_name}}</h5>
-                        <p class="card-text">@if($profile_data[0]->role == 1) Professional @else Newbie @endif Marites</p>
+                        <p class="card-text">@if($profile_data[0]->role == 1) Professional Marites <span class="badge text-bg-success float-end">ADMIN</span> @else Newbie Marites @endif</p>
                     </div>
                 </div>
                 <h2>Contact Information</h2>

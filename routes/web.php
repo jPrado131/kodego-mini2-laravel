@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/{post_id}', [PostController::class, 'single'])->name('post.single');
     Route::put('/post/{post_id}', [PostController::class, 'edit_put'])->name('post.edit_put');
     Route::delete('/post/{post_id}', [PostController::class, 'delete'])->name('post.delete');
-    Route::put('/post/{post_id}', [PostController::class, 'single'])->name('post.comment');
+    Route::post('/post/{post_id}', [PostController::class, 'single'])->name('post.comment');
 
 
 });  

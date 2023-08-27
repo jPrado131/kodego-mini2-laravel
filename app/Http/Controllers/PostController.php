@@ -155,6 +155,7 @@ class PostController extends Controller
 
         return view('post.edit',['post'=>$posts[0]]);
     }
+    
     public function edit_put($post_id ,Request $request){
         $image_url = $request['current_image'];
            
