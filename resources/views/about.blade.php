@@ -56,6 +56,19 @@
    </div> 
 </div>
 
+</div>
+      <footer>
+         <div style="border-top: 1px solid #F1F6F5; background-color: #A5C0DD;">            
+               <div class="col-md-12 text-center">
+                  <div>
+                  <p class="copyright"style="margin:0%;">Copyright &copy; 2023 Marites Voice Center. All rights reserved.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+  
+
 
 
 @endsection
