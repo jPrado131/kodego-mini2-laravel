@@ -42,15 +42,21 @@
                     <ul class="navbar-nav me-auto">
                         <!-- Authentication Links -->
                         @guest
-
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('about') }}">{{ __('About') }}</a>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('post.index') }}">{{ __('Home') }}</a>
+                            </li>                            
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('post.list_event') }}">{{ __('Events') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('post.list_announcements') }}">{{ __('Announcements') }}</a>
                             </li>
                         @endguest
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('about') }}">{{ __('About') }}</a>
-                        </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -14,19 +14,30 @@
                 <a class="btn btn-secondary" href="{{$backurl}}">Cancel</a>
             </div>
         </div>
-  
+        
+        @if($user->role === 1)
+            <div class="form-group mb-3">
+                <label for="type">Type:</label>
+                <select class="form-control" id="type" name="type">
+                    <option value="post">Post</option>
+                    <option value="event">Event</option>
+                    <option value="announcement">Announcement</option>
+                </select>
+            </div>
+        @endif
+        
         <div class="form-group mb-3 text-middle">
-            <label for="image">Featured Image</label>
+            <label for="image">Featured Image:</label>
             <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%; display: none;">
             <input class="form-control form-control-lg" id="image" type="file" name="image" accept="image/png, image/gif, image/jpeg" onchange="previewImage(event)">
         </div>
         <div class="form-group mb-3">
-            <label for="title">Title</label>
+            <label for="title">Title:</label>
             <input type="text" class="form-control" id="title" name="title" required>
         </div>
         
         <div class="form-group mb-3">
-            <label for="content">Content</label>
+            <label for="content">Content:</label>
             <input type="hidden" id="hiddenContent" name="content" />
             <textarea class="form-control witheditor" id="content" rows="4"></textarea>
         </div>

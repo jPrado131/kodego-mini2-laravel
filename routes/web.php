@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Counter;
+use App\Livewire\RealTimeChat;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,9 +29,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/image', [ProfileController::class, 'upload_pro_pic'])->name('upload.upload_pro_pic');
 
     Route::get('/home', [PostController::class, 'index'])->name('post.index');
-    Route::get('/news/{type}', [PostController::class, 'list_type'])->name('post.list');
     Route::put('/home', [PostController::class, 'create_put'])->name('post.create_put');
-
+    Route::get('/events', [PostController::class, 'list_event'])->name('post.list_event');
+    Route::get('/announcements', [PostController::class, 'list_announcements'])->name('post.list_announcements');
 
     Route::get('/post/create', [PostController::class, 'create_get'])->name('post.create_get');
     Route::get('/post/{post_id}/edit', [PostController::class, 'edit_get'])->name('post.edit_get');
@@ -45,6 +47,9 @@ Route::middleware(['auth'])->group(function () {
 Auth::routes();
 
 // PUBLIC ROUTES
+
+Route::get('/counter', Counter::class);
+Route::get('/real-time-chat', RealTimeChat::class);
 
 Route::get('/', function () {
     return view('welcome');

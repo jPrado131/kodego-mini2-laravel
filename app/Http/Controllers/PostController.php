@@ -34,27 +34,82 @@ class PostController extends Controller
         return view('post.list',['data'=> $data]);
     }
 
+    public function list_event(){
+        $data = array();
+        $posts = DB::table('posts')
+        ->select('*')
+        ->orderBy('updated_at', 'desc')
+        ->where('status','publish')
+        ->where('type','event')
+        ->get();
+
+        foreach($posts as $post){
+
+            $userData = DB::table('users')
+            ->join('profiles', 'profiles.user_id', '=', 'users.id')
+            ->select('profiles.*', 'users.name', 'users.email')
+            ->where('users.id','=',$post->author)
+            ->get();
+
+            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
+            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
+        }
+
+        return view('post.list-events',['data'=> $data]);
+    }
+
+    public function list_announcements(){
+        $data = array();
+        $posts = DB::table('posts')
+        ->select('*')
+        ->orderBy('updated_at', 'desc')
+        ->where('status','publish')
+        ->where('type','announcement')
+        ->get();
+
+        foreach($posts as $post){
+
+            $userData = DB::table('users')
+            ->join('profiles', 'profiles.user_id', '=', 'users.id')
+            ->select('profiles.*', 'users.name', 'users.email')
+            ->where('users.id','=',$post->author)
+            ->get();
+
+            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
+            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
+        }
+
+        return view('post.list-events',['data'=> $data]);
+    }
+
     public function list_type($type){
         
         return $type;
     }
 
     public function create_get(Request $request){
+        $user = Auth::user();
         $backUrl = '';
+        
+        $userData = DB::table('users')
+        ->join('profiles', 'profiles.user_id', '=', 'users.id')
+        ->select('profiles.*', 'users.name', 'users.email')
+        ->where('users.id','=',$user->id)
+        ->get();
+
         if($request['page'] && $request['page'] == 'profile' ){
            $backUrl = '/profile';
         }else{
             $backUrl = '/home';
         }
 
-        return view('post.create', ['backurl'=> $backUrl]);
+        return view('post.create', ['backurl'=> $backUrl, 'user' => $userData[0]]);
     } 
 
     public function create_put(Request $request){
         $user = Auth::user();
         $image_url = "";
-
-        //return dd($request);
+        $type = $request['type'] ? $request['type'] : 'post';
 
         $insertedId = DB::table('posts')->insertGetId(
             [
@@ -62,7 +117,7 @@ class PostController extends Controller
                 'content' => $request['content'],
                 'author' => $user->id,
                 'thumbnail_url' => $image_url,
-                'type' => 'post',
+                'type' => $type,
                 'status' => 'publish',
             ]
         );
