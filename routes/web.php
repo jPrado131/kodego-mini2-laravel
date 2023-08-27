@@ -40,7 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/{post_id}', [PostController::class, 'single'])->name('post.single');
     Route::put('/post/{post_id}', [PostController::class, 'edit_put'])->name('post.edit_put');
     Route::delete('/post/{post_id}', [PostController::class, 'delete'])->name('post.delete');
-   
+    Route::put('/post/{post_id}', [PostController::class, 'single'])->name('post.comment');
+
 
 });  
 
@@ -49,6 +50,7 @@ Auth::routes();
 // PUBLIC ROUTES
 
 Route::get('/counter', Counter::class);
+
 Route::get('/real-time-chat', RealTimeChat::class);
 
 Route::get('/', function () {

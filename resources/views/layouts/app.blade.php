@@ -27,7 +27,7 @@
 
 </div>
     <div id="app ">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-size: cover; background-color: blue;">
+        <nav id="header" class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-size: cover; background-color: blue;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ url('/images/mvclogo.png') }}" alt="MVC" class="img-fluid" style="max-width: 60px; max-height: 60px;">

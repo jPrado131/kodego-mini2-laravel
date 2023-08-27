@@ -55,7 +55,7 @@ class PostController extends Controller
             array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
         }
 
-        return view('post.list-events',['data'=> $data]);
+        return view('post.list',['data'=> $data]);
     }
 
     public function list_announcements(){
@@ -79,7 +79,7 @@ class PostController extends Controller
             array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
         }
 
-        return view('post.list-events',['data'=> $data]);
+        return view('post.list',['data'=> $data]);
     }
 
     public function list_type($type){
@@ -90,7 +90,7 @@ class PostController extends Controller
     public function create_get(Request $request){
         $user = Auth::user();
         $backUrl = '';
-        
+
         $userData = DB::table('users')
         ->join('profiles', 'profiles.user_id', '=', 'users.id')
         ->select('profiles.*', 'users.name', 'users.email')
@@ -181,23 +181,45 @@ class PostController extends Controller
     
     }
 
-    public function single($post_id){
+    public function single($post_id, Request $request){
         $user = Auth::user();
         
-        $data = DB::table('posts')
+        $post = DB::table('posts')
         ->select('*')
         ->where('id', '=', $post_id)
         ->get();
 
-        if(!$data->isEmpty()){
+        if($request['comment']){
+            DB::table('comments')->insert(
+                [
+                    'post_id' => $post[0]->id,
+                    'user_id' => $user->id,
+                    'comment' => $request['comment'],
+                    'type' => $post[0]->type,
+                ]
+            );
+        }
 
-            $dateTimeString = $data[0]->created_at; // Replace this with your date and time string
+        $commentData = DB::table('comments')
+        ->select('*')
+        ->where('post_id', '=', $post[0]->id)
+        ->get();
+        
+
+        if(!$post->isEmpty()){
+
+            $dateTimeString = $post[0]->created_at; // Replace this with your date and time string
 
             $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $dateTimeString);
 
             $formattedDate = $dateTime->format('F j, Y');
 
-            return view('post.single', ['post' => $data[0], 'post_formateddate' => $formattedDate, 'user'=>$user]);
+            if($request['comment']){
+                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user'=>$user])->with('hash','comment-section');
+            }else{
+                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user'=>$user]);
+            }
+ 
         }else {
             return response('post not found');
         }
@@ -208,5 +230,6 @@ class PostController extends Controller
     {
         DB::table('posts')->where('id', '=', $post_id)->delete();
         return redirect()->route('post.index')->with('success', 'Post deleted successfully.');
-    }
+    } 
+
 }

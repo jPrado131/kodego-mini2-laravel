@@ -12,8 +12,8 @@
     <div class="container mt-5">
         <div class="row mb-3 text-end">
             <div class="col">
-                <a class="btn btn-secondary" href="{{route('post.create_get',['page'=>'profile'])}}">Create Post</a>
-                <a class="btn btn-secondary" href="{{route('profile.edit')}}">Edit Profile</a>
+                <a class="btn btn-primary" href="{{route('post.create_get',['page'=>'profile'])}}">Create Post</a>
+                <a class="btn btn-primary" href="{{route('profile.edit')}}">Edit Profile</a>
             </div>
         </div>
         <div class="row">

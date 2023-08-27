@@ -8,11 +8,11 @@
 @endif
 
 <div class="container my-5">
-    <div class="row mb-3">
+    {{-- <div class="row mb-3">
         <div class="col text-end">
-            <a class="btn btn-secondary" href="{{route('post.create_get')}}">Create Post</a>
+            <a class="btn btn-primary" href="{{route('post.create_get')}}">Create Post</a>
         </div>
-    </div>
+    </div> --}}
     
     <div class="container mt-5">
         <div class="row">
