@@ -15,3 +15,29 @@
     right: 0;
     z-index: 1;
 }
+
+// DAISY
+
+.mvc {
+    font-size: 2em;
+    font-weight:lighter;
+    text-align: center;
+    color:rgb(6, 14, 14);
+    /* Animation */
+    animation: color-change .5s linear infinite;
+    }
+
+    @keyframes color-change {
+    0% {
+       color:darkblue;
+    }
+   //  50% {
+   //     color:rgb(44, 2, 252);
+   //  }
+    100% {
+       color:rgb(1, 4, 6);
+    }
+ 
+    }
+
+

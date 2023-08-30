@@ -56,7 +56,7 @@
                                 <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('post.list_announcements') }}">{{ __('Announcements') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ route('/mariteschat') }}">{{ __('Chat') }}</a>
+                                <a class="nav-link" style="font-size: 1.3rem; font-weight: bold; color: #002E94"  href="{{ ('/mariteschat') }}">{{ __('Chat') }}</a>
                             </li>
                         @endguest
 
