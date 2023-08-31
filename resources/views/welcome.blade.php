@@ -72,7 +72,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-5">
-            <img src="images/welcome.jpeg" alt="Marites Voice Center" class="img-fluid">          
+            <img src="images/welcome.jpg" alt="Marites Voice Center" class="img-fluid">          
         </div>
         <div class="col-md-7 pt-5">
             <h2><span class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
