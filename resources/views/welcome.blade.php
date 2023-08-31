@@ -96,11 +96,21 @@
             <p>
                 Share your hobbies, interests, and talents with others. Tell us about your love of cooking, gardening, hiking, or anything else that you're passionate about.
             </p>
-
+            
+            
 
         </div>
     </div>
 </div>
-            
+<footer>
+            <div class="copyright" style="color:darkgrey">            
+                  <div class="col-md-12 text-center">
+                     <div><br><br><br>
+                     <p class="copyright"style="margin:0%;">Copyright &copy; 2023 Marites Voice Center.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </footer>                   
 @endsection
 
