@@ -24,17 +24,17 @@
     text-align: center;
     color:rgb(238, 231, 231);
     /* Animation */
-    animation: color-change .001s linear infinite;
+    animation: color-change .9s linear infinite;
     }
 
     @keyframes color-change {
-    0% {
+    50% {
        color:rgb(227, 17, 112);
     }
    //  50% {
    //     color:rgb(44, 2, 252);
    //  }
-    100% {
+    20% {
        color:rgb(0, 223, 244);
     }
  
