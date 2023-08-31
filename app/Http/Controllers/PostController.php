@@ -11,102 +11,120 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function index(){
-        $data = array();
-        $posts = DB::table('posts')
-        ->select('*')
-        ->orderBy('updated_at', 'desc')
-        ->where('status','publish')
-        ->get();
-
-        foreach($posts as $post){
-
-            $userData = DB::table('users')
-            ->join('profiles', 'profiles.user_id', '=', 'users.id')
-            ->select('profiles.*', 'users.name', 'users.email')
-            ->where('users.id','=',$post->author)
-            ->get();
-
-            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
-            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
-        }
-
-        return view('post.list',['data'=> $data]);
+    public function index()
+    {
+        return view('post.list', ['data' => $this->rende_post_lists('index')]);
     }
 
-    public function list_event(){
-        $data = array();
-        $posts = DB::table('posts')
-        ->select('*')
-        ->orderBy('updated_at', 'desc')
-        ->where('status','publish')
-        ->where('type','event')
-        ->get();
 
-        foreach($posts as $post){
-
-            $userData = DB::table('users')
-            ->join('profiles', 'profiles.user_id', '=', 'users.id')
-            ->select('profiles.*', 'users.name', 'users.email')
-            ->where('users.id','=',$post->author)
-            ->get();
-
-            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
-            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
-        }
-
-        return view('post.list',['data'=> $data]);
+    public function list_event()
+    {
+        return view('post.list', ['data' => $this->rende_post_lists('event')]);
     }
 
-    public function list_announcements(){
-        $data = array();
-        $posts = DB::table('posts')
-        ->select('*')
-        ->orderBy('updated_at', 'desc')
-        ->where('status','publish')
-        ->where('type','announcement')
-        ->get();
-
-        foreach($posts as $post){
-
-            $userData = DB::table('users')
-            ->join('profiles', 'profiles.user_id', '=', 'users.id')
-            ->select('profiles.*', 'users.name', 'users.email')
-            ->where('users.id','=',$post->author)
-            ->get();
-
-            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
-            array_push($data, (object) ['post'=> $post, 'limitedText'=> $limitedText, 'author_data' => $userData[0]]);
-        }
-
-        return view('post.list',['data'=> $data]);
+    public function list_announcements()
+    {
+        return view('post.list', ['data' => $this->rende_post_lists('announcement')]);
     }
 
-    public function list_type($type){
-        
+    public function rende_post_lists($type)
+    {
+
+        $user = Auth::user();
+
+        $data = array();
+
+        if ($type == 'event') {
+            $posts = DB::table('posts')
+                ->select('*')
+                ->orderBy('updated_at', 'desc')
+                ->where('status', 'publish')
+                ->where('type', 'event')
+                ->get();
+        } elseif ($type == 'announcement') {
+            $posts = DB::table('posts')
+                ->select('*')
+                ->orderBy('updated_at', 'desc')
+                ->where('status', 'publish')
+                ->where('type', 'announcement')
+                ->get();
+        } else {
+            $posts = DB::table('posts')
+                ->select('*')
+                ->orderBy('updated_at', 'desc')
+                ->where('status', 'publish')
+                ->get();
+        }
+
+
+        foreach ($posts as $post) {
+
+            $userData = DB::table('users')
+                ->join('profiles', 'profiles.user_id', '=', 'users.id')
+                ->select('profiles.*', 'users.name', 'users.email')
+                ->where('users.id', '=', $post->author)
+                ->get();
+
+            $comments = DB::table('comments')
+                ->select('*')
+                ->where('post_id', $post->id)
+                ->get();
+
+            $heart_post = DB::table('heart_post')
+                ->select('*')
+                ->where('post_id', $post->id)
+                ->where('status', true)
+                ->get();
+
+            $heart_post_default = DB::table('heart_post')
+                ->select('*')
+                ->where('post_id', $post->id)
+                ->where('user_id', $user->id)
+                ->get();
+
+            $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
+            array_push($data, (object) [
+                'post' => $post,
+                'limitedText' => $limitedText,
+                'hear_post_count' => !$heart_post->isEmpty() ? count($heart_post) : 0,
+                'heart_post_default' => !$heart_post_default->isEmpty() ? $heart_post_default[0]->status : false,
+                'comment_count' => !$comments->isEmpty() ? count($comments) : 0,
+                'author_data' => $userData[0]
+            ]);
+        }
+
+        return $data;
+    }
+
+
+    public function list_type($type)
+    {
+
         return $type;
     }
 
-    public function create_get(Request $request){
+    public function create_get(Request $request)
+    {
         $user = Auth::user();
         $backUrl = '';
 
         $userData = DB::table('users')
-        ->join('profiles', 'profiles.user_id', '=', 'users.id')
-        ->select('profiles.*', 'users.name', 'users.email')
-        ->where('users.id','=',$user->id)
-        ->get();
+            ->join('profiles', 'profiles.user_id', '=', 'users.id')
+            ->select('profiles.*', 'users.name', 'users.email')
+            ->where('users.id', '=', $user->id)
+            ->get();
 
-        if($request['page'] && $request['page'] == 'profile' ){
-           $backUrl = '/profile';
-        }else{
+        if ($request['page'] && $request['page'] == 'profile') {
+            $backUrl = '/profile';
+        } else {
             $backUrl = '/home';
         }
 
-        return view('post.create', ['backurl'=> $backUrl, 'user' => $userData[0]]);
-    } 
+        return view('post.create', ['backurl' => $backUrl, 'user' => $userData[0]]);
+    }
 
-    public function create_put(Request $request){
+    public function create_put(Request $request)
+    {
         $user = Auth::user();
         $image_url = "";
         $type = $request['type'] ? $request['type'] : 'post';
@@ -124,73 +142,74 @@ class PostController extends Controller
 
         if ($insertedId && $request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = 'post-'.time() . '.' . $image->getClientOriginalExtension();
+            $imageName = 'post-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/posts'), $imageName);
 
-            $image_url = "/uploads/posts/". $imageName;
+            $image_url = "/uploads/posts/" . $imageName;
 
             DB::table('posts')
-            ->where('id', $insertedId)
-            ->update([
-                'thumbnail_url' => $image_url,
-            ]);           
+                ->where('id', $insertedId)
+                ->update([
+                    'thumbnail_url' => $image_url,
+                ]);
         }
 
-        return redirect('/post/'.$insertedId);
-
+        return redirect('/post/' . $insertedId);
     }
 
-    public function edit_get($post_id){
+    public function edit_get($post_id)
+    {
 
         $user = Auth::user();
 
         $posts = DB::table('posts')
-        ->select('*')
-        ->where('id','=',$post_id)
-        ->get();
+            ->select('*')
+            ->where('id', '=', $post_id)
+            ->get();
 
-        if($posts[0]->author != $user->id){
+        if ($posts[0]->author != $user->id) {
             return 'Sorry!, you dont have access to edit this page.';
         }
 
-        return view('post.edit',['post'=>$posts[0]]);
+        return view('post.edit', ['post' => $posts[0]]);
     }
-    
-    public function edit_put($post_id ,Request $request){
+
+    public function edit_put($post_id, Request $request)
+    {
         $image_url = $request['current_image'];
-           
-        
+
+
         if ($post_id && $request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = 'post-'.time() . '.' . $image->getClientOriginalExtension();
+            $imageName = 'post-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/posts'), $imageName);
 
-            $image_url = "/uploads/posts/". $imageName;
+            $image_url = "/uploads/posts/" . $imageName;
         }
 
         DB::table('posts')
-        ->where('id', $post_id)
-        ->update([
-            'title' => $request['title'],
-            'content' => $request['content'],
-            'thumbnail_url' => $image_url,
-            'type' => 'post',
-            'status' => ($request['status'] ? 'publish' : 'unpublish'),
-        ]);      
-        
-        return redirect('/post/'.$post_id);
-    
+            ->where('id', $post_id)
+            ->update([
+                'title' => $request['title'],
+                'content' => $request['content'],
+                'thumbnail_url' => $image_url,
+                'type' => 'post',
+                'status' => ($request['status'] ? 'publish' : 'unpublish'),
+            ]);
+
+        return redirect('/post/' . $post_id);
     }
 
-    public function single($post_id, Request $request){
+    public function single($post_id, Request $request)
+    {
         $user = Auth::user();
-        
-        $post = DB::table('posts')
-        ->select('*')
-        ->where('id', '=', $post_id)
-        ->get();
 
-        if($request['comment']){
+        $post = DB::table('posts')
+            ->select('*')
+            ->where('id', '=', $post_id)
+            ->get();
+
+        if ($request['comment']) {
             DB::table('comments')->insert(
                 [
                     'post_id' => $post[0]->id,
@@ -202,12 +221,12 @@ class PostController extends Controller
         }
 
         $commentData = DB::table('comments')
-        ->select('*')
-        ->where('post_id', '=', $post[0]->id)
-        ->get();
-        
+            ->select('*')
+            ->where('post_id', '=', $post[0]->id)
+            ->get();
 
-        if(!$post->isEmpty()){
+
+        if (!$post->isEmpty()) {
 
             $dateTimeString = $post[0]->created_at; // Replace this with your date and time string
 
@@ -215,22 +234,19 @@ class PostController extends Controller
 
             $formattedDate = $dateTime->format('F j, Y');
 
-            if($request['comment']){
-                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user'=>$user])->with('hash','comment-section');
-            }else{
-                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user'=>$user]);
+            if ($request['comment']) {
+                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user' => $user])->with('hash', 'comment-section');
+            } else {
+                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user' => $user]);
             }
- 
-        }else {
+        } else {
             return response('post not found');
         }
-       
     }
 
     public function delete($post_id)
     {
         DB::table('posts')->where('id', '=', $post_id)->delete();
         return redirect()->route('post.index')->with('success', 'Post deleted successfully.');
-    } 
-
+    }
 }

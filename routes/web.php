@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,16 +40,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/post/{post_id}', [PostController::class, 'delete'])->name('post.delete');
     Route::post('/post/{post_id}', [PostController::class, 'single'])->name('post.comment');
 
-
 });  
 
 Auth::routes();
 
 // PUBLIC ROUTES
-
 Route::get('/counter', Counter::class);
-
-Route::get('/real-time-chat', RealTimeChat::class);
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,11 +54,6 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 })->name('about');
-
-Route::get('/welcomepage', function () {
-    return view('welcomepage');
-})->name('welcomepage');
-
 
 
 
