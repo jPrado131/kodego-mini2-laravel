@@ -33,14 +33,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/post/create', [PostController::class, 'create_get'])->name('post.create_get');
     Route::get('/post/{post_id}/edit', [PostController::class, 'edit_get'])->name('post.edit_get');
-    
-    
+
+
     Route::get('/post/{post_id}', [PostController::class, 'single'])->name('post.single');
     Route::put('/post/{post_id}', [PostController::class, 'edit_put'])->name('post.edit_put');
     Route::delete('/post/{post_id}', [PostController::class, 'delete'])->name('post.delete');
     Route::post('/post/{post_id}', [PostController::class, 'single'])->name('post.comment');
-
-});  
+});
 
 Auth::routes();
 
@@ -55,5 +54,6 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-
-
+Route::get('/contactus', function () {
+    return view('contactus');
+})->name('contactus');

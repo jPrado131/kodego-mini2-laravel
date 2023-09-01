@@ -16,6 +16,98 @@
     z-index: 1;
 }
 
+#navbarSupportedContent {
+   
+   .nav-item {
+
+      a {
+         font-size: 1.3rem;
+         font-weight: bold;
+         color: #002E94;
+         text-transform: capitalize;
+      }
+   
+      &.active {
+         a { color: #ca45b2!important; }
+
+      }
+   }
+}
+
+.logged-in {
+
+
+   #header {
+      padding-bottom:0!important;
+   }
+
+   #navbarSupportedContent {
+   
+      .nav-item {
+         border-bottom:5px solid transparent;
+         
+         a {
+            padding: 1rem 2rem;
+         }
+
+         &.active { 
+            border-color: #ca45b2!important;
+         }
+      }
+   }
+}
+
+
+// POST ITEM
+
+.post-item {
+
+   h5 {
+      font-weight: 700;
+      text-transform: capitalize;
+
+      small {
+         display: block;
+         font-size: 0.8rem;
+         font-weight: normal;
+      }
+   }
+
+   h4 {
+      color: #002e94;
+      font-size: 1.5rem;
+      font-weight: 600;
+   }
+
+}
+
+// login / Register PAGE
+#login-page,
+#register-page {
+   background: #feb8cf;
+   min-height: calc(100vh - 65px);
+}
+
+.glow-chat-item {
+   animation: glow 2s ease-in-out infinite;
+}
+
+
+@keyframes glow {
+   0% {
+       color: #002E94;
+       text-shadow: 0 0 10px #002E94, 0 0 20px #002E94, 0 0 30px #002E94;
+   }
+   50% {
+       color: #ca45b2;
+       text-shadow: 0 0 20px #ca45b2, 0 0 30px #ca45b2, 0 0 40px #ca45b2;
+   }
+   100% {
+       color: #002E94;
+       text-shadow: 0 0 10px #002E94, 0 0 20px #002E94, 0 0 30px #002E94;
+   }
+}
+
 // DAISY
 
 .mvc {

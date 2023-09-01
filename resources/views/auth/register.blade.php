@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+<div id="register-page">
+<div class="container pt-5">
+    <div class="row justify-content-center">
+        <img src="/images/dont-delete/marites-login.gif" style="max-width: 350px;" alt="login-image">
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -73,5 +78,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

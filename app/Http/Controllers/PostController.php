@@ -83,9 +83,12 @@ class PostController extends Controller
                 ->get();
 
             $limitedText = Str::limit(html_entity_decode(strip_tags($post->content)), 200, ' (...)');
+            $postedTime = $this->timeAgo(strtotime($post->created_at));
+
             array_push($data, (object) [
                 'post' => $post,
-                'limitedText' => $limitedText,
+                'posted_time' => $postedTime,
+                'limited_text' => $limitedText,
                 'hear_post_count' => !$heart_post->isEmpty() ? count($heart_post) : 0,
                 'heart_post_default' => !$heart_post_default->isEmpty() ? $heart_post_default[0]->status : false,
                 'comment_count' => !$comments->isEmpty() ? count($comments) : 0,
@@ -131,8 +134,8 @@ class PostController extends Controller
 
         $insertedId = DB::table('posts')->insertGetId(
             [
-                'title' => $request['title'],
-                'content' => $request['content'],
+                'title' => $request['title'] ? $request['title'] : $request['title'],
+                'content' => $request['content'] ? $request['content'] : '',
                 'author' => $user->id,
                 'thumbnail_url' => $image_url,
                 'type' => $type,
@@ -178,7 +181,6 @@ class PostController extends Controller
     {
         $image_url = $request['current_image'];
 
-
         if ($post_id && $request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = 'post-' . time() . '.' . $image->getClientOriginalExtension();
@@ -190,8 +192,8 @@ class PostController extends Controller
         DB::table('posts')
             ->where('id', $post_id)
             ->update([
-                'title' => $request['title'],
-                'content' => $request['content'],
+                'title' => $request['title'] ? $request['title'] : '',
+                'content' => $request['content'] ? $request['content'] : '',
                 'thumbnail_url' => $image_url,
                 'type' => 'post',
                 'status' => ($request['status'] ? 'publish' : 'unpublish'),
@@ -209,36 +211,45 @@ class PostController extends Controller
             ->where('id', '=', $post_id)
             ->get();
 
-        if ($request['comment']) {
-            DB::table('comments')->insert(
-                [
-                    'post_id' => $post[0]->id,
-                    'user_id' => $user->id,
-                    'comment' => $request['comment'],
-                    'type' => $post[0]->type,
-                ]
-            );
-        }
-
-        $commentData = DB::table('comments')
-            ->select('*')
-            ->where('post_id', '=', $post[0]->id)
-            ->get();
-
 
         if (!$post->isEmpty()) {
 
-            $dateTimeString = $post[0]->created_at; // Replace this with your date and time string
+            $userData = DB::table('users')
+                ->join('profiles', 'profiles.user_id', '=', 'users.id')
+                ->select('profiles.*', 'users.name', 'users.email')
+                ->where('users.id', '=', $post[0]->author)
+                ->get();   
 
-            $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $dateTimeString);
+            $postedTime = $this->timeAgo(strtotime($post[0]->created_at));
 
-            $formattedDate = $dateTime->format('F j, Y');
+            $heart_post_default = DB::table('heart_post')
+            ->select('*')
+            ->where('post_id', $post[0]->id)
+            ->where('user_id', $user->id)
+            ->get();
 
-            if ($request['comment']) {
-                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user' => $user])->with('hash', 'comment-section');
-            } else {
-                return view('post.single', ['post' => $post[0], 'post_formateddate' => $formattedDate, 'comment' => $commentData, 'user' => $user]);
-            }
+            $comments = DB::table('comments')
+            ->select('*')
+            ->where('post_id', $post[0]->id)
+            ->get();
+
+            $heart_post = DB::table('heart_post')
+                ->select('*')
+                ->where('post_id', $post[0]->id)
+                ->where('status', true)
+                ->get();
+
+
+            return view('post.single', [
+                'post' => $post[0], 
+                'posted_time' => $postedTime, 
+                'user' => $user,
+                'author_data' => $userData[0],
+                'heart_post_default' => !$heart_post_default->isEmpty() ? $heart_post_default[0]->status : false,
+                'hear_post_count' => !$heart_post->isEmpty() ? count($heart_post) : 0,
+                'comment_count' => !$comments->isEmpty() ? count($comments) : 0,
+            ]);
+ 
         } else {
             return response('post not found');
         }
@@ -248,5 +259,24 @@ class PostController extends Controller
     {
         DB::table('posts')->where('id', '=', $post_id)->delete();
         return redirect()->route('post.index')->with('success', 'Post deleted successfully.');
+    }
+
+
+    public function timeAgo($timestamp) {
+        $currentTimestamp = time();
+        $timeDiff = $currentTimestamp - $timestamp;
+    
+        if ($timeDiff < 60) {
+            return "1 minute ago";
+        } elseif ($timeDiff < 3600) {
+            $minutes = floor($timeDiff / 60);
+            return $minutes . " minutes ago";
+        } elseif ($timeDiff < 86400) {
+            $hours = floor($timeDiff / 3600);
+            return $hours . " hours ago";
+        } else {
+            $days = floor($timeDiff / 86400);
+            return $days . " days ago";
+        }
     }
 }

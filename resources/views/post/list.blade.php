@@ -17,7 +17,7 @@
     <div class="container mt-5">
         <div class="row">
         @foreach($data as $item)
-          <div class="col-md-8 offset-md-2">
+          <div class="post-item col-md-8 offset-md-2">
             <div class="card mb-4">
                 
                 <div class="card-header d-flex align-items-center">
@@ -27,7 +27,10 @@
                     @else
                         <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
                     @endif
-                    <h5 class="mb-0">{{$item->author_data->name}}</h5>
+                    <h5 class="mb-0">
+                        {{$item->author_data->name}}
+                        <small>{{ $item->posted_time }}</small>
+                    </h5>
                 
                     @if($item->post->type == 'event') 
                         <span class="badge text-bg-warning" style="margin-left:auto;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
@@ -53,7 +56,7 @@
 
                     <div class="card-text">
                         <h4>{{$item->post->title }}</h4>
-                        {!! $item->limitedText !!}
+                        {!! $item->limited_text !!}
                     </div>
                     <div class="text-end">
                         {{ $item->hear_post_count }} Hearts | {{ $item->comment_count }} Comments
@@ -81,6 +84,5 @@
         @endforeach      
       </div>
 </div>
-
-@endsection
 @livewireScripts
+@endsection

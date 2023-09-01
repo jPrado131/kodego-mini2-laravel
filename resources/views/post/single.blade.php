@@ -1,9 +1,31 @@
 @extends('layouts.app')
 @section('content')
+<div id="single-page">
+<div class="container my-5 post-item">
+    <div class="row mb-3">
+        <div class="col d-flex align-items-center">
 
-<div class="container my-5">
-    <div class="row mb-3 text-end">
-        <div class="col">
+            @if($author_data->thumbnail)
+                <img src="{{$author_data->thumbnail}}" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+            @else
+                <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+            @endif
+            <h5 class="mb-0">
+                {{$author_data->name}}
+                <small>{{ $posted_time }}</small>
+            </h5>
+
+            @if($post->type == 'event') 
+            <span class="badge text-bg-warning" style="margin-left:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
+                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
+            </svg> EVENT</span>
+            @elseif($post->type == 'announcement')
+                <span class="badge text-bg-danger" style="margin-left:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-megaphone-fill" viewBox="0 0 16 16">
+                    <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0v-11zm-1 .724c-2.067.95-4.539 1.481-7 1.656v6.237a25.222 25.222 0 0 1 1.088.085c2.053.204 4.038.668 5.912 1.56V3.224zm-8 7.841V4.934c-.68.027-1.399.043-2.008.053A2.02 2.02 0 0 0 0 7v2c0 1.106.896 1.996 1.994 2.009a68.14 68.14 0 0 1 .496.008 64 64 0 0 1 1.51.048zm1.39 1.081c.285.021.569.047.85.078l.253 1.69a1 1 0 0 1-.983 1.187h-.548a1 1 0 0 1-.916-.599l-1.314-2.48a65.81 65.81 0 0 1 1.692.064c.327.017.65.037.966.06z"/>
+                </svg> ANNOUNCEMENT</span>
+            @endif
+        </div>
+        <div class="col text-end">
             @if($user->id == $post->author)
                 <a class="btn btn-primary" href="/post/{{$post->id}}/edit">Edit</a>
                 <form id="deletepost" action="{{ route('post.delete', ['post_id' => $post->id]) }}" method="POST" style="display: inline-block;">
@@ -23,42 +45,21 @@
         @endif
 
         <div class="card-body">
-            <h5 class="card-title">{{$post->title}}</h5>
-            <p class="card-text"><small class="text-muted">Posted on {{ $post_formateddate }}</small></p>
+            <h4 class="card-title">{{$post->title}}</h4>
             <p class="card-text">{!! $post->content !!}</p>
+            <div class="text-end">
+                {{ $hear_post_count }} Hearts | {{ $comment_count }} Comments
+            </div>
+            @livewire('heart-post', ['post' => $post, 'default' => $heart_post_default])
         </div>
     </div>
 </div>
 <div id="comment-section"class="container">
-
-    <div class="mt-3">
-        <h5>Comments</h5>
-        @if(isset($comment))
-            @foreach($comment as $item)
-
-                <div class="card @if($item->user_id == $user->id) float-end @endif" style="width:80%;">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted"> @if($item->user_id == $user->id) ME @else User{{$item->user_id}} @endif</h6>
-                        <p class="card-text">{{$item->comment}}</p>
-                    </div>
-                </div>
-            @endforeach
-        @endif
-
-        <!-- Add more comments here -->
-    </div>
-    <form id="commentPost" action="{{route('post.comment',['post_id' => $post->id])}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group mb-3">
-            <textarea class="form-control" id="comment-box" rows="4" placeholder="Type Comment Here" name="comment"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
-            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
-        </svg></button>
-    </form>
+    @livewire('comment', ['post' => $post])
+</div>
 </div>
 
-<script>
+<script type="text/javascript">
     function confirmSubmit() {
     
         if (confirm("Are you sure you want to delete this post?")) {
@@ -73,4 +74,5 @@
     
     }
 </script>
+@livewireScripts
 @endsection
