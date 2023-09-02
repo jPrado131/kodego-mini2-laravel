@@ -34,7 +34,7 @@
             <div class="d-flex flex-start w-100">
         
                 @if($user->thumbnail)
-                    <img src="{{$item->thumbnail}}" alt="User Profile" class="rounded-circle shadow-1-strong me-3" style="margin-right: 10px; width: 50px;height: 50px;">
+                    <img src="{{$user->thumbnail}}" alt="User Profile" class="rounded-circle shadow-1-strong me-3" style="margin-right: 10px; width: 50px;height: 50px;">
                 @else
                     <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle shadow-1-strong me-3" style="margin-right: 10px; width: 50px;height: 50px;">
                 @endif

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Marites Voice Center') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -29,7 +29,7 @@
     <div id="app" class="@guest not-logged-in @else logged-in @endguest">
         <nav id="header" class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="background-size: cover; background-color: blue;">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="@guest {{ url('/') }} @else {{ url('/home') }} @endguest">
                 <img src="{{ url('/images/mvclogo.png') }}" alt="MVC" class="img-fluid" style="max-width: 60px; max-height: 60px;">
                 
                 </a>
