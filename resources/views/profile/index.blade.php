@@ -10,12 +10,14 @@
   </script>
 <div class="container">
     <div class="container mt-5">
+        @if(!$view_only)
         <div class="row mb-3 text-end">
             <div class="col">
                 <a class="btn btn-primary" href="{{route('post.create_get',['page'=>'profile'])}}">Create Post</a>
                 <a class="btn btn-primary" href="{{route('profile.edit')}}">Edit Profile</a>
             </div>
         </div>
+        @endif
         <div class="row">
             <div class="col-md-4">
                 <div class="card mb-3">
@@ -48,9 +50,13 @@
                     <div class="row">
                         @foreach($posts as $item)
                           <div class="col-6">
-                            <div class="card mb-4">
+                            <div class="card mb-4 post-item">
                                 
                                 <div class="card-header d-flex align-items-center">
+                                    <h5 class="mb-0">
+                                        {{-- {{$item->author_data->name}} --}}
+                                        <small>{{ $item->posted_time }}</small>
+                                    </h5>
                                     <a class="btn @if($item->post->status == 'publish') btn-success @else btn-warning @endif  mb-0 ml-auto" style="margin-left: auto;">{{$item->post->status}}</a>
                                 </div>
                                 <a href="/post/{{$item->post->id}}">
@@ -68,9 +74,7 @@
                                         {!! $item->limitedText !!}
                                     </div>
                                     <hr>
-                                    <a href="#" class="card-link">Like</a>
-                                    <a href="#" class="card-link">Comment</a>
-                                    <a href="#" class="card-link">Share</a>
+                                    {{ $item->hear_post_count }} Hearts | {{ $item->comment_count }} Comments
                                 </div>
                             </div>
                         </div>

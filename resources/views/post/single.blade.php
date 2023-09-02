@@ -4,16 +4,17 @@
 <div class="container my-5 post-item">
     <div class="row mb-3">
         <div class="col d-flex align-items-center">
-
-            @if($author_data->thumbnail)
-                <img src="{{$author_data->thumbnail}}" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
-            @else
-                <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
-            @endif
-            <h5 class="mb-0">
-                {{$author_data->name}}
-                <small>{{ $posted_time }}</small>
-            </h5>
+            <a href="/profile?id={{$author_data->id}}" class="d-flex align-items-center" target="_blank" style="text-decoration:none;color:#333;">
+                @if($author_data->thumbnail)
+                    <img src="{{$author_data->thumbnail}}" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+                @else
+                    <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+                @endif
+                <h5 class="mb-0">
+                    {{$author_data->name}}
+                    <small>{{ $posted_time }}</small>
+                </h5>
+            </a>
 
             @if($post->type == 'event') 
             <span class="badge text-bg-warning" style="margin-left:20px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
@@ -34,7 +35,7 @@
                     <button type="submit" class="btn btn-danger" onclick="return confirmSubmit()">Delete</button>
                 </form>
             @endif
-            <a class="btn btn-secondary" href="{{route('post.index')}}">Back To Home</a>
+            <a class="btn btn-secondary" href="{{ URL::previous() }}">Back</a>
         </div>
     </div>
     <div class="card">

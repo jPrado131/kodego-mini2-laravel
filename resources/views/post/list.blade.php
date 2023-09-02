@@ -21,16 +21,17 @@
             <div class="card mb-4">
                 
                 <div class="card-header d-flex align-items-center">
-            
-                    @if($item->author_data->thumbnail)
-                    <img src="{{$item->author_data->thumbnail}}" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
-                    @else
-                        <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
-                    @endif
-                    <h5 class="mb-0">
-                        {{$item->author_data->name}}
-                        <small>{{ $item->posted_time }}</small>
-                    </h5>
+                    <a href="/profile?id={{$item->author_data->id}}" class="d-flex align-items-center" target="_blank" style="text-decoration:none;color:#333;">
+                        @if($item->author_data->thumbnail)
+                        <img src="{{$item->author_data->thumbnail}}" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+                        @else
+                            <img src="https://via.placeholder.com/40" alt="User Profile" class="rounded-circle mr-3" style="margin-right: 10px; width: 50px;height: 50px;">
+                        @endif
+                        <h5 class="mb-0">
+                            {{$item->author_data->name}}
+                            <small>{{ $item->posted_time }}</small>
+                        </h5>
+                    </a>
                 
                     @if($item->post->type == 'event') 
                         <span class="badge text-bg-warning" style="margin-left:auto;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event-fill" viewBox="0 0 16 16">
