@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationApiController;
+use App\Http\Controllers\JokesApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/register', [AuthenticationApiController::class, 'store']);
     Route::delete('/users/{user}', [AuthenticationApiController::class, 'destroy']);
     Route::patch('/users/{user}', [AuthenticationApiController::class, 'update']);
+
+
+    Route::get('/jokes', [JokesApiController::class, 'index']);
+    Route::get('/jokes/{joke}', [JokesApiController::class, 'show']);
+    Route::get('/myjokes/{user}', [JokesApiController::class, 'show_my_jokes']);
+    Route::post('/jokes', [JokesApiController::class, 'store']);
+
 
     Route::post('/logout', [AuthenticationApiController::class, 'logout']);
 });
