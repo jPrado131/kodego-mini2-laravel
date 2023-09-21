@@ -26,7 +26,11 @@
          color: #002E94;
          text-transform: capitalize;
       }
-   
+      
+      .dropdown-item:hover,
+      &:hover > a {
+         color: #ca45b2!important; 
+      }
       &.active {
          a { color: #ca45b2!important; }
 
