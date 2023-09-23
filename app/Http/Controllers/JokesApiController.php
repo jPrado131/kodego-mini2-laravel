@@ -26,6 +26,7 @@ class JokesApiController extends Controller
         ->join('joke_users', 'joke_users.joke_id', '=', 'jokes.id')
         ->select('*')
         ->where('joke_users.user', '=', $user)
+        ->orderBy('jokes.id','DESC')
         ->get();
 
         return $jokeData;
